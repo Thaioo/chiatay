@@ -441,6 +441,27 @@ MEMORIES.forEach((item, i) => {
 initFarewellSlider();
 mountFarewellPhoto();
 
+/* ========================= SCROLL LOCK UNTIL FIRST CLICK ========================= */
+const scrollLock = (() => {
+  let unlocked = false;
+
+  function enableScroll(){
+    if(unlocked) return;
+    unlocked = true;
+    document.body.classList.add('scroll-enabled');
+    document.documentElement.classList.add('scroll-enabled');
+    document.removeEventListener('pointerdown', enableScroll);
+    document.removeEventListener('touchstart', enableScroll);
+    document.removeEventListener('click', enableScroll);
+  }
+
+  document.addEventListener('pointerdown', enableScroll, { passive: true });
+  document.addEventListener('touchstart', enableScroll, { passive: true });
+  document.addEventListener('click', enableScroll, { passive: true });
+
+  return { enableScroll };
+})();
+
 /* ========================= SCROLL REVEAL ========================= */
 const revealEls = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver((entries) => {
